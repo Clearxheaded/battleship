@@ -51,12 +51,15 @@ export class Gameboard {
     }
 
     receiveAttack(x_cord, y_cord) {
-        // Check if the coordinates are within the grid
-        if(x_cord < 0 || x_cord > 10) return 'Invalid coordinates';
-        if(y_cord < 0 || y_cord > 10) return 'Invalid coordinates';
+        // First check if the coordinates are within the grid
+        if(x_cord < 0 || x_cord >= 10 || y_cord < 0 || y_cord >= 10) {
+            return 'Invalid coordinates';
+        }
 
-        // Check if the cell has been shot at before
-        if(this.gameGrid[x_cord][y_cord] === 'hit' || this.gameGrid[x_cord][y_cord] === 'miss') return 'This cell has been shot before';
+        // Then check if the cell has been shot before
+        if(this.gameGrid[x_cord][y_cord] === 'hit' || this.gameGrid[x_cord][y_cord] === 'miss') {
+            return 'This cell has been shot before';
+        }
 
         // If it's not 0, then there is a ship, log the hit
         if(this.gameGrid[x_cord][y_cord] != 0) {
@@ -72,5 +75,11 @@ export class Gameboard {
             })
             return 'Missed!';
         }
+    }
+
+    // Check if all the ships sunk
+    allShipsSunk() {
+        // If every ship sunk, then all ships sunk
+        return this.placedShips.every((shipData) => shipData.ship.isSunk());
     }
 }

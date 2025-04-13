@@ -1,4 +1,5 @@
-import { Ship } from "./Ship.js";
+import { Ship } from "../src/models/Ship.js";
+import { Gameboard } from "../src/models/Gameboard.js";
 
 test('New ship has 0 hits and is not sunk', () => {
     const ship = new Ship(3);
