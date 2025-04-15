@@ -1,0 +1,370 @@
+/* Base Styles */
+:root {
+    --primary-bg: #0a1929;
+    --secondary-bg: #0f2942;
+    --board-bg: #1a3a5a;
+    --grid-border: #2a4a6a;
+    --text-color: #e0f7fa;
+    --accent-color: #00e5ff;
+    --ship-color: #64ffda;
+    --ship-preview: rgba(100, 255, 218, 0.3);
+    --hit-color: #ff5252;
+    --miss-color: #78909c;
+    --invalid-placement: rgba(255, 82, 82, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    letter-spacing: 4px;
+    margin: 20px 0;
+    text-shadow: 0 0 10px var(--accent-color);
+    color: var(--accent-color);
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin: 15px 0;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.game-container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Button Styles */
+.btn {
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.primary-btn {
+    background-color: rgba(100, 255, 218, 0.1);
+    font-size: 1.2rem;
+    padding: 10px 24px;
+}
+
+/* Game Screens */
+#setup-screen, #game-screen, #game-over {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#setup-screen.active {
+    display: flex;
+}
+
+#game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 25, 41, 0.9);
+    z-index: 10;
+    justify-content: center;
+}
+
+.game-over-content {
+    background-color: var(--secondary-bg);
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 30px var(--accent-color);
+}
+
+/* Setup Screen */
+.controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.orientation-control {
+    display: flex;
+    gap: 20px;
+}
+
+.orientation-control label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.orientation-control span {
+    margin-left: 5px;
+}
+
+.setup-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+/* Ship Selection */
+.ship-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ship-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ship {
+    background-color: var(--secondary-bg);
+    border: 2px solid var(--grid-border);
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ship:hover {
+    border-color: var(--accent-color);
+}
+
+.ship.selected {
+    border-color: var(--accent-color);
+    background-color: rgba(100, 255, 218, 0.1);
+    transform: scale(1.05);
+}
+
+.ship.placed {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ship-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ship-units {
+    display: flex;
+    gap: 2px;
+}
+
+.unit {
+    width: 20px;
+    height: 20px;
+    background-color: var(--ship-color);
+    border-radius: 2px;
+}
+
+/* Game Boards */
+.boards-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+.board-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Board and Cell Enhancements */
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 3px; /* Increased from 2px for more visible grid */
+    background-color: var(--grid-border);
+    padding: 5px; /* Increased padding */
+    border: 2px solid var(--grid-border);
+    border-radius: 4px; /* Added rounded corners */
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background-color: var(--board-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(100, 255, 218, 0.3); /* Increased border opacity for visibility */
+    border-radius: 2px; /* Slightly rounded cell corners */
+}
+
+/* Coordinate spacing adjustments */
+.x-coordinates {
+    margin-left: 25px;
+    height: 25px;
+    margin-bottom: 10px; /* Added space between X coordinates and board */
+}
+
+.y-coordinates {
+    flex-direction: column;
+    width: 25px;
+    margin-right: 10px; /* Added space between Y coordinates and board */
+}
+
+.board-with-coordinates {
+    display: flex;
+    align-items: center; /* Center align the board with Y coordinates */
+}
+
+.coordinates {
+    display: flex;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+}
+
+.x-coordinates div, .y-coordinates div {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+}
+
+/* Cell States */
+.cell.ship {
+    background-color: var(--ship-color);
+}
+
+.cell.preview {
+    background-color: var(--ship-preview);
+}
+
+.cell.invalid {
+    background-color: var(--invalid-placement);
+}
+
+.cell.hit {
+    background-color: var(--hit-color);
+    animation: pulse 0.5s;
+}
+
+.cell.hit::after {
+    content: '×';
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.cell.miss {
+    background-color: var(--miss-color);
+}
+
+.cell.miss::after {
+    content: '•';
+    font-size: 1.5rem;
+}
+
+/* Game Status */
+.game-status {
+    text-align: center;
+    margin: 15px 0;
+}
+
+#battle-message {
+    min-height: 24px;
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+    .boards-container, .setup-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .ship-selection {
+        order: 2;
+    }
+    
+    .board-container {
+        order: 1;
+    }
+}
+
+@media (max-width: 500px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+    
+    .board {
+        grid-template-columns: repeat(10, 25px);
+        grid-template-rows: repeat(10, 25px);
+    }
+    
+    .cell {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .x-coordinates div, .y-coordinates div {
+        width: 25px;
+        height: 25px;
+    }
+}
