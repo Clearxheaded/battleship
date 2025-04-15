@@ -43,6 +43,17 @@ function initGame() {
     ships.forEach(ship => {
         ship.addEventListener('click', shipSelection);
     });
+
+    // Toggle orientation
+    const orientationInputs = document.querySelectorAll('input[name="orientation"]');
+    orientationInputs.forEach(input => {
+        input.addEventListener('change', orientationToggling);
+    });
+
+    // Setup board hover events for ship placement preview
+    setupBoard.addEventListener('mouseover', showPlacementPreview);
+    setupBoard.addEventListener('mouseout', clearPlacementPreview);
+    setupBoard.addEventListener('click', placeShip);
 }
 
 // Selecting ships
@@ -72,6 +83,91 @@ function shipSelection(event) {
     console.log('Selected ship: ', selectedShip);
 }
 
+// Handle the orientation toggling 
+function orientationToggling(event) {
+    // Update the global variable
+    orientation = event.target.value;
+}
+
+// Highlight where the ship would be placed
+function showPlacementPreview(event) {
+    // If no ship is selected or not hovering over a cell, do nothing
+    if (!selectedShip || !event.target.classList.contains('cell')) {
+        return;
+    }
+    
+    // Get coordinates of hovered cell
+    const x = parseInt(event.target.dataset.x);
+    const y = parseInt(event.target.dataset.y);
+    
+    // Clear any existing previews
+    clearPlacementPreview();
+    
+    // Calculate which cells the ship would occupy
+    const shipCells = [];
+    
+    if (orientation === 'horizontal') {
+        // Ship extends horizontally (along y-axis in your grid)
+        for (let i = 0; i < selectedShip.length; i++) {
+            if (y + i < 10) { // Stay within bounds
+                const cell = document.querySelector(`#setup-board .cell[data-x="${x}"][data-y="${y + i}"]`);
+                if (cell) {
+                    shipCells.push(cell);
+                }
+            }
+        }
+    } else { // vertical
+        // Ship extends vertically (along x-axis in your grid)
+        for (let i = 0; i < selectedShip.length; i++) {
+            if (x + i < 10) { // Stay within bounds
+                const cell = document.querySelector(`#setup-board .cell[data-x="${x + i}"][data-y="${y}"]`);
+                if (cell) {
+                    shipCells.push(cell);
+                }
+            }
+        }
+    }
+    
+    const isValid = isValidPlacement(x, y, selectedShip.length, orientation);
+    
+    shipCells.forEach(cell => {
+        cell.classList.add(isValid ? 'preview' : 'invalid');
+    });
+}
+
+// Clear any ship placement previews
+function clearPlacementPreview() {
+    document.querySelectorAll('#setup-board .cell.preview, #setup-board .cell.invalid')
+        .forEach(cell => {
+            cell.classList.remove('preview', 'invalid');
+        });
+}
+
+// Check if ship placement is valid
+function isValidPlacement(x, y, length, orientation) {
+    // Check if ship is within board boundaries
+    if (orientation === 'horizontal' && y + length > 10) return false;
+    if (orientation === 'vertical' && x + length > 10) return false;
+    
+    // Check if ship overlaps with existing ships
+    if (orientation === 'horizontal') {
+        for (let i = 0; i < length; i++) {
+            const cell = document.querySelector(`#setup-board .cell[data-x="${x}"][data-y="${y + i}"]`);
+            if (cell && cell.classList.contains('ship')) {
+                return false; // Ship overlaps with already placed ship
+            }
+        }
+    } else { // vertical
+        for (let i = 0; i < length; i++) {
+            const cell = document.querySelector(`#setup-board .cell[data-x="${x + i}"][data-y="${y}"]`);
+            if (cell && cell.classList.contains('ship')) {
+                return false; // Ship overlaps with already placed ship
+            }
+        }
+    }
+    
+    return true;
+}
 
 // Initialize the game when DOM is loaded
 document.addEventListener("DOMContentLoaded", initGame);
@@ -80,4 +176,3 @@ document.addEventListener("DOMContentLoaded", initGame);
 
 
 
-  
