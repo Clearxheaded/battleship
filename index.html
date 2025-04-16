@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<script defer src="./bundle.js"></script></head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>BATTLESHIP</h1>
+        </header>
+        
+        <!-- Setup Screen -->
+        <div id="setup-screen" class="active">
+            <h2>Position Your Fleet</h2>
+            
+            <div class="controls">
+                <div class="orientation-control">
+                    <label>
+                        <input type="radio" name="orientation" value="horizontal" checked>
+                        <span>Horizontal</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="orientation" value="vertical">
+                        <span>Vertical</span>
+                    </label>
+                </div>
+                
+                <button id="random-placement" class="btn">Random</button>
+                <button id="reset-placement" class="btn">Reset</button>
+            </div>
+            
+            <div class="setup-container">
+                <div class="ship-selection">
+                    <h3>Your Ships</h3>
+                    <div class="ship-list">
+                        <div class="ship" data-ship="carrier" data-length="5">
+                            <div class="ship-name">Carrier</div>
+                            <div class="ship-units">
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                            </div>
+                        </div>
+                        <div class="ship" data-ship="battleship" data-length="4">
+                            <div class="ship-name">Battleship</div>
+                            <div class="ship-units">
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                            </div>
+                        </div>
+                        <div class="ship" data-ship="cruiser" data-length="3">
+                            <div class="ship-name">Cruiser</div>
+                            <div class="ship-units">
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                            </div>
+                        </div>
+                        <div class="ship" data-ship="submarine" data-length="3">
+                            <div class="ship-name">Submarine</div>
+                            <div class="ship-units">
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                            </div>
+                        </div>
+                        <div class="ship" data-ship="destroyer" data-length="2">
+                            <div class="ship-name">Destroyer</div>
+                            <div class="ship-units">
+                                <div class="unit"></div>
+                                <div class="unit"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="board-container">
+                    <div class="board-wrapper">
+                        <div class="coordinates x-coordinates">
+                            <div>A</div><div>B</div><div>C</div><div>D</div><div>E</div>
+                            <div>F</div><div>G</div><div>H</div><div>I</div><div>J</div>
+                        </div>
+                        <div class="board-with-coordinates">
+                            <div class="coordinates y-coordinates">
+                                <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+                                <div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+                            </div>
+                            <div id="setup-board" class="board"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="start-game" class="btn primary-btn" disabled>Start Game</button>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen">
+            <div class="game-status">
+                <h2 id="status-message">Your Turn</h2>
+                <div id="battle-message"></div>
+            </div>
+            
+            <div class="boards-container">
+                <div class="player-board-container">
+                    <h3>Your Fleet</h3>
+                    <div class="board-wrapper">
+                        <div class="coordinates x-coordinates">
+                            <div>A</div><div>B</div><div>C</div><div>D</div><div>E</div>
+                            <div>F</div><div>G</div><div>H</div><div>I</div><div>J</div>
+                        </div>
+                        <div class="board-with-coordinates">
+                            <div class="coordinates y-coordinates">
+                                <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+                                <div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+                            </div>
+                            <div id="player-board" class="board"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="computer-board-container">
+                    <h3>Enemy Fleet</h3>
+                    <div class="board-wrapper">
+                        <div class="coordinates x-coordinates">
+                            <div>A</div><div>B</div><div>C</div><div>D</div><div>E</div>
+                            <div>F</div><div>G</div><div>H</div><div>I</div><div>J</div>
+                        </div>
+                        <div class="board-with-coordinates">
+                            <div class="coordinates y-coordinates">
+                                <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+                                <div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+                            </div>
+                            <div id="computer-board" class="board"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="new-game" class="btn">New Game</button>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="game-over">
+            <div class="game-over-content">
+                <h2 id="winner-message"></h2>
+                <button id="play-again" class="btn primary-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
