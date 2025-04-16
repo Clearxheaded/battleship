@@ -219,12 +219,11 @@ h3 {
     align-items: center;
 }
 
-/* Board and Cell Enhancements */
 .board {
     display: grid;
     grid-template-columns: repeat(10, 40px);
     grid-template-rows: repeat(10, 40px);
-    gap: 3px; /* Increased from 2px for more visible grid */
+    gap: 3px; 
     background-color: var(--grid-border);
     padding: 5px; /* Increased padding */
     border: 2px solid var(--grid-border);
@@ -240,26 +239,27 @@ h3 {
     align-items: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 1px solid rgba(100, 255, 218, 0.3); /* Increased border opacity for visibility */
-    border-radius: 2px; /* Slightly rounded cell corners */
+    border: 1px solid rgba(100, 255, 218, 0.3); 
+    border-radius: 2px; 
 }
 
-/* Coordinate spacing adjustments */
 .x-coordinates {
-    margin-left: 25px;
+    display: flex;
+    margin-left: 28px; 
     height: 25px;
-    margin-bottom: 10px; /* Added space between X coordinates and board */
+    margin-bottom: 5px;
 }
 
 .y-coordinates {
+    display: flex;
     flex-direction: column;
     width: 25px;
-    margin-right: 10px; /* Added space between Y coordinates and board */
+    margin-right: 5px;
 }
 
 .board-with-coordinates {
     display: flex;
-    align-items: center; /* Center align the board with Y coordinates */
+    align-items: center;
 }
 
 .coordinates {
@@ -268,12 +268,26 @@ h3 {
     color: var(--accent-color);
 }
 
-.x-coordinates div, .y-coordinates div {
-    width: 40px;
-    height: 40px;
+.x-coordinates div {
+    width: 43px; 
+    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateX(-1.5px);
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.y-coordinates div {
+    width: 25px;
+    height: 43px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-1.5px);
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .cell:hover {
